@@ -1,16 +1,17 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
+import { Schema, model } from 'mongoose';
 
-const Workflow = sequelize.define('Workflow', {
-    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
-    userId: { type: DataTypes.UUID, allowNull: false },
-    name: { type: DataTypes.STRING, allowNull: false },
-    definition: { type: DataTypes.JSONB, allowNull: false }, 
-    status: { type: DataTypes.ENUM('Draft', 'Published'), defaultValue: 'Draft' }, 
-    webhookSecret: { type: DataTypes.STRING, allowNull: true },
-    cronSchedule: { type: DataTypes.STRING, allowNull: true },
+const workflowSchema = new Schema({
+    _id: { type: Schema.Types.ObjectId, auto: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    name: { type: String, required: true },
+    definition: { type: Object, required: true },
+    status: { type: String, enum: ['Draft', 'Published'], default: 'Draft' },
+    webhookSecret: { type: String, default: null },
+    cronSchedule: { type: String, required: true},
 }, { 
-    paranoid: true
+    timestamps: true
 });
 
-module.exports = Workflow;
+const Workflow = model('Workflow', workflowSchema);
+
+export default Workflow;

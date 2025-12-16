@@ -1,26 +1,26 @@
 // src/api/routes/workflow.routes.js
-const express = require('express');
-const router = express.Router();
-const workflowController = require('../controllers/workflow.controller');
-const authMiddleware = require('../middleware/authMiddleware');
+import { Router } from 'express';
+const router = Router();
+import { createWorkflow, publishWorkflow, getRunLogs, webhookTrigger } from '../controllers/workflow.controller.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 
 // Workflow Management APIs (require authentication)
 router.use(authMiddleware);
 
 // POST: Create a new Draft workflow
-router.post('/workflows', workflowController.createWorkflow); 
+router.post('/workflows', createWorkflow); 
 
 // PUT: Publish a workflow (Draft -> Published)
-router.put('/workflows/:id/publish', workflowController.publishWorkflow);
+router.put('/workflows/:id/publish', publishWorkflow);
 
 // GET: Fetch run logs
-router.get('/runs/:id/logs', workflowController.getRunLogs); 
+router.get('/runs/:id/logs', getRunLogs); 
 
 // --- PUBLIC/UNAUTHENTICATED WEBHOOK TRIGGER ---
 // POST: Webhook Trigger endpoint
 // Note: This endpoint is intentionally placed *outside* the authMiddleware scope
 // because the webhookSecret handles authentication for this specific request.
-router.post('/workflows/:id/webhook/:secret', workflowController.webhookTrigger);
+router.post('/workflows/:id/webhook/:secret', webhookTrigger);
 
 
-module.exports = router;
+export default router;

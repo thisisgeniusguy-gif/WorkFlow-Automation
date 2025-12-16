@@ -1,20 +1,13 @@
-// src/config/database.js
-const { Sequelize } = require('sequelize');
+import { connect } from 'mongoose';
 
-// Using an in-memory SQLite database for simplicity, allowing the code to run locally
-// In production, replace with: 
-// new Sequelize('postgres://user:pass@host:5432/dbname');
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: './flow_db.sqlite', // File storage for persistence
-    logging: false
-});
-
-const connection = {
-    // BullMQ requires Redis connection details
-    // In a real app, load this from environment variables
-    host: '127.0.0.1', 
-    port: 6379, 
+const database = async () => {
+  try {
+    await connect(process.env.MONGO_URI || 'mongodb+srv://n8n_user:mongo1234@venue-main.ketzrpm.mongodb.net/?appName=venue-main');
+    console.log('MongoDB Connected Successfully');
+  } catch (err) {
+    console.error('MongoDB Connection Failed:', err.message);
+    process.exit(1);
+  }
 };
 
-module.exports = { sequelize, connection };
+export default database;

@@ -1,15 +1,15 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database'); 
+import { Schema, model } from 'mongoose';
 
-const WorkflowRun = sequelize.define('WorkflowRun', {
-    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
-    workflowId: { type: DataTypes.UUID, allowNull: false, references: { model: 'Workflows', key: 'id' } },
-    status: { type: DataTypes.ENUM('PENDING', 'RUNNING', 'COMPLETED', 'FAILED', 'PAUSED'), defaultValue: 'PENDING' }, 
-    startTime: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-    endTime: { type: DataTypes.DATE, allowNull: true },
-    nodeLogs: { type: DataTypes.JSONB, defaultValue: [] }, 
+const WorkflowRunSchema = new Schema({
+    _id: { type: Schema.Types.ObjectId, auto: true },
+    workflowId: { type: Schema.Types.ObjectId, required: true, ref: 'Workflow' },
+    status: { type: String, enum: ['PENDING', 'RUNNING', 'COMPLETED', 'FAILED', 'PAUSED'], default: 'PENDING' },
+    startTime: { type: Date, default: Date.now },
+    endTime: { type: Date, default: null },
+    nodeLogs: { type: Array, default: [] }
 }, { 
-    indexes: [{ fields: ['workflowId'] }]
+    timestamps: true,
+    indexes: [{ workflowId: 1 }]
 });
 
-module.exports = WorkflowRun;
+export default model('WorkflowRun', WorkflowRunSchema);

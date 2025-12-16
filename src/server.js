@@ -1,9 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { sequelize } = require('./config/database'); 
-const workflowRoutes = require('./api/routes/workflow.routes'); 
-const Workflow = require('./models/Workflow');
-const WorkflowRun = require('./models/WorkflowRun');
+import express from 'express';
+import bodyParser from 'body-parser';
+// 1. We keep the MongoDB connection function
+import database from './config/database.js';
+
+import workflowRoutes from './api/routes/workflow.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,27 +12,24 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Database Connection (Mongoose)
+// 4. Connect to MongoDB
+database();
+
 // API Routes
 app.use('/api', workflowRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Flow Workflow Orchestrator API is running.');
+app.get('/', (res) => {
+    res.send('Flow Workflow Orchestrator API is running (MongoDB).');
 });
 
-// Start Server and Database Sync
+// Start Server 
 async function startServer() {
     try {
-        // Initialize Models and Tables
-        Workflow.associate = (models) => {
-            Workflow.hasMany(models.WorkflowRun, { foreignKey: 'workflowId' });
-        };
-        WorkflowRun.associate = (models) => {
-            WorkflowRun.belongsTo(models.Workflow, { foreignKey: 'workflowId' });
-        };
-        
-        // Sync models with the database (creates tables if they don't exist)
-        await sequelize.sync({ alter: true }); 
-        console.log('Database connection and synchronization successful.');
+        // 5. Removed all Sequelize/SQL synchronization logic, 
+        // as Mongoose handles schema on first model use or by default.
+        // We only wait for the connection promise inside connectDB to resolve.
+        console.log('MongoDB connection successful.');
 
         app.listen(PORT, () => {
             console.log(`API Gateway running on http://localhost:${PORT}`);

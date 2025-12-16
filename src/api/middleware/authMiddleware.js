@@ -4,8 +4,8 @@ const authMiddleware = (req, res, next) => {
     // look up the user, and attach user data (e.g., userId) to req.user.
     
     // Mock user for testing CRUD and Webhook (Important: Workflow model requires userId)
-    req.user = { id: 'mock-user-123' }; 
+    req.user = { id: '651a94e82b3d1c001f3f6e12' }; 
     next();
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

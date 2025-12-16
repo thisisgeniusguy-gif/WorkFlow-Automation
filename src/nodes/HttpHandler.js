@@ -1,6 +1,6 @@
-const axios = require('axios');
+import axios from 'axios';
 
-async function execute(config, context) {
+async function execute(config) {
     console.log(`Executing HTTP Request: ${config.method} ${config.url}`);
     const startTime = Date.now();
 
@@ -27,4 +27,4 @@ async function execute(config, context) {
     }
 }
 
-module.exports = { execute };
+export default { execute };

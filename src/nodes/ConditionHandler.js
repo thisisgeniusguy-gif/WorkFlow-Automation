@@ -13,4 +13,4 @@ function execute(config, context) {
     };
 }
 
-module.exports = { execute };
+export default { execute };
