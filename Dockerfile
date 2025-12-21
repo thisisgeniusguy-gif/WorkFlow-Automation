@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3000
 
 # The command to start your app
-CMD ["npm", "start"]
+CMD ["npm", "run dev"]
