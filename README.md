@@ -1,4 +1,4 @@
-# 🔄 Workflow Automation Engine
+# 🔄 Workflow Automation Engine - FLOW
 
 A powerful, scalable workflow automation platform inspired by n8n, built with Node.js, MongoDB, and Redis. Create, manage, and execute complex workflows with a visual node-based interface backed by a robust DAG (Directed Acyclic Graph) execution engine.
 
