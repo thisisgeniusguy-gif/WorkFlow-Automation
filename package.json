@@ -6,14 +6,20 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "worker": "node src/orchestrator/executor.worker.js"
+    "worker": "node src/orchestrator/executor.worker.js",
+    "dev": "concurrently --kill-others \"npm start\" \"npm run worker\""
   },
   "dependencies": {
     "axios": "^1.6.5",
+    "bcryptjs": "^3.0.3",
     "bullmq": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.1",
     "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.11",
     "pg": "^8.11.3",
     "redis-cli": "^2.1.2",
     "sequelize": "^6.35.2",
@@ -23,5 +29,8 @@
     "workflow",
     "orchestrator",
     "nodejs"
-  ]
+  ],
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }

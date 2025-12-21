@@ -2,8 +2,8 @@
 import { Queue } from 'bullmq';
 import database from './database.js';
 const connection = {
-    host: '127.0.0.1', 
-    port: 6379, 
+  host: "redis",  // This matches the service name in your docker-compose.yml
+  port: 6379      // Standard Redis port
 };
 
 // Define the queue for workflow execution jobs

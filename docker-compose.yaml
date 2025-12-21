@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # Main Node.js API Server
+  app:
+    build: .
+    container_name: node_app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      # Using your Atlas URI provided
+      - MONGO_URI=mongodb+srv://n8n_user:mongo1234@venue-main.ketzrpm.mongodb.net/?appName=venue-main
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  # Background Worker (Runs 'npm run worker')
+  worker:
+    build: .
+    container_name: node_worker
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb+srv://n8n_user:mongo1234@venue-main.ketzrpm.mongodb.net/?appName=venue-main
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    command: ["npm", "run", "worker"]
+    restart: unless-stopped
+
+  # Redis Server (Used for job queues/caching)
+  redis:
+    image: redis:alpine
+    container_name: redis_server
+    ports:
+      - "6379:6379"
+
+  # Local MongoDB (Optional: Keep only if you need a local DB too)
+  mongodb:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
