@@ -274,6 +274,9 @@ TZ=UTC
 # Worker Configuration
 MAX_RETRIES=3
 RETRY_BACKOFF_MS=1000
+
+# Claude API (required only for llm_analyze nodes)
+ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 ---
@@ -422,6 +425,25 @@ Response: 201 Created
     "id": "node_123456",
     "type": "http_request",
     "label": "Fetch User Data"
+  }
+}
+```
+
+#### Add an LLM Analysis Node
+The `llm_analyze` node sends the previous node's response body (or the value at `config.input`, e.g. `"{{previousResult.data}}"`) to Claude and returns a structured analysis in `analysis`: `format`, `isValid`, `inferredSchema`, `recordCount`, `issues`, `summary`. Connect it after an `http_request` node, then branch on fields such as `previousResult.analysis.isValid` in a `conditional` node.
+
+```http
+POST /workflows/:id/nodes
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "type": "llm_analyze",
+  "label": "Analyse Response Format",
+  "config": {
+    "instructions": "Expected: JSON array of users with id (number) and email (string).",
+    "model": "claude-opus-5-5",
+    "maxInputChars": 100000
   }
 }
 ```

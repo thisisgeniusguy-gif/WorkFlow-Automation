@@ -3,6 +3,7 @@ import HttpRequestNode from './HTTPRequestNode.js';
 import ConditionalNode from './ConditionalNode.js';
 import DelayNode from './DelayNode.js';
 import NotificationNode from './NotifyNode.js';
+import LLMAnalyzeNode from './LLMAnalyzeNode.js';
 
 /**
  * Node Factory - Creates and manages workflow nodes
@@ -18,6 +19,7 @@ export class NodeFactory {
         this.register(ConditionalNode);
         this.register(DelayNode);
         this.register(NotificationNode);
+        this.register(LLMAnalyzeNode);
     }
 
     /**

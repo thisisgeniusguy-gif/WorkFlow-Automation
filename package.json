@@ -10,6 +10,7 @@
     "dev": "concurrently --kill-others \"npm start\" \"npm run worker\""
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
     "axios": "^1.6.5",
     "bcryptjs": "^3.0.3",
     "bullmq": "^5.0.0",
