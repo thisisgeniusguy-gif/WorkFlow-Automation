@@ -25,12 +25,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Database Connection (Mongoose)
-// 4. Connect to MongoDB
-database();
-
-
-
 app.get('/', (req, res) => {
     const newLocal = res.send('Flow Workflow Orchestrator API is running (MongoDB).');
     return newLocal;
@@ -57,9 +51,7 @@ app.use((err, req, res, next) => {
 // Start Server 
 async function startServer() {
     try {
-        // 5. Removed all Sequelize/SQL synchronization logic, 
-        // as Mongoose handles schema on first model use or by default.
-        // We only wait for the connection promise inside connectDB to resolve.
+        await database();
         console.log('MongoDB connection successful.');
 
         app.listen(PORT, () => {

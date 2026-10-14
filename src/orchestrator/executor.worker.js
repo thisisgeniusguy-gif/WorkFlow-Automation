@@ -677,6 +677,10 @@ const watchWorkflowChanges = async () => {
             }
         });
 
+        changeStream.on('error', (error) => {
+            console.error('[WATCH] Change stream unavailable; continuing without live workflow updates:', error.message);
+        });
+
         console.log('[WATCH] Monitoring workflow changes for cron schedules');
     } catch (error) {
         console.error('[WATCH] Failed to set up change stream:', error.message);

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Main Node.js API Server
   app:
@@ -10,11 +8,11 @@ services:
     env_file:
       - .env
     environment:
-      # Using your Atlas URI provided
-      - MONGO_URI=mongodb+srv://n8n_user:mongo1234@venue-main.ketzrpm.mongodb.net/?appName=venue-main
+      - MONGO_URI=mongodb://mongodb:27017/workflow_db
       - REDIS_URL=redis://redis:6379
     depends_on:
       - redis
+      - mongodb
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -27,11 +25,12 @@ services:
       - .env
     environment:
       - NODE_ENV=production
-      - MONGO_URI=mongodb+srv://n8n_user:mongo1234@venue-main.ketzrpm.mongodb.net/?appName=venue-main
+      - MONGO_URI=mongodb://mongodb:27017/workflow_db
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     depends_on:
       - redis
+      - mongodb
     command: ["npm", "run", "worker"]
     restart: unless-stopped
 
